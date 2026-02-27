@@ -203,7 +203,7 @@
     "loginReset": "إعادة تعيين كلمة المرور",
     "loginRegister": "تسجيل جديد",
     "loginLogin": "تسجيل الدخول",
-    "loginOpenId": "تسجيل الدخول باستخدام OpenID",
+    "loginOpenId": "تسجيل الدخول باستخدام OpenID (Google)",
     "loginFailed": "البريد الالكتروني أو كلمة المرور غير صحيحة",
     "loginCreated": "تم تسجيل مستخدم جديد",
     "loginResetSuccess": "تحقق من بريدك الإلكتروني",
