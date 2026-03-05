@@ -79,7 +79,7 @@ const ChangeServerPage = () => {
         const apiKey = attributes?.['ui.apiServiceKey'] ;
         const response = await fetch(apiUrl, {
           headers: {
-            'api_key': apiKey,
+            'API-Key': apiKey,
           },
         });
         if (response.ok) {
