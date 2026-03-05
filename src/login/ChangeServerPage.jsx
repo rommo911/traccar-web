@@ -75,25 +75,41 @@ const ChangeServerPage = () => {
   useEffect(() => {
     const fetchServers = async () => {
       try {
-        const apiUrl = attributes?.['ui.apiServiceUrl'] ;
-        const apiKey = attributes?.['ui.apiServiceKey'] ;
+        console.log('ChangeServerPage: checking attributes...', attributes);
+        
+        // Try to get from attributes (which might be filtered for public users)
+        let apiUrl = attributes?.['ui.apiServiceUrl'] || attributes?.['apiServiceUrl'] || attributes?.['web.apiServiceUrl'];
+        let apiKey = attributes?.['ui.apiServiceKey'] || attributes?.['apiServiceKey'] || attributes?.['web.apiServiceKey'];
+        
+        // Fallback to a derived URL if attributes are missing (to help debugging)
+        if (!apiUrl) {
+          apiUrl = `${window.location.protocol}//${window.location.hostname}:8787/servers`;
+          console.log('ChangeServerPage: attributes missing, using fallback URL:', apiUrl);
+        }
+
+        console.log('ChangeServerPage: fetching from', apiUrl);
+
         const response = await fetch(apiUrl, {
           headers: {
-            'API-Key': apiKey,
+            'API-Key': apiKey || '',
           },
         });
+        
         if (response.ok) {
           const data = await response.json();
           const fetchedServers = data.map((s) => s.address);
           setServers([...new Set([currentServer, ...fetchedServers])]);
+          console.log('ChangeServerPage: servers updated:', fetchedServers);
+        } else {
+          console.error('ChangeServerPage: fetch failed with status', response.status, response.statusText);
         }
       } catch (e) {
-        console.error('Failed to fetch servers:', e);
+        console.error('ChangeServerPage: unexpected error during fetch:', e);
       }
     };
-    if (attributes) {
-      fetchServers();
-    }
+    
+    // We fetch if attributes are present OR if we have no attributes yet (to try the fallback)
+    fetchServers();
   }, [attributes]);
 
   const validateUrl = (url) => {
