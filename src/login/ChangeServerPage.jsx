@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import VpnLockIcon from '@mui/icons-material/VpnLock';
 import { makeStyles } from 'tss-react/mui';
 import {
@@ -20,7 +20,7 @@ import { errorsActions } from '../store';
 
 const currentServer = `${window.location.protocol}//${window.location.host}`;
 
-const officialServers = [
+const hardcodedServers = [
   currentServer,
   'https://traccar.syriawan.mywire.org',
   'https://traccar1.syriawan.mywire.org',
@@ -63,11 +63,38 @@ const ChangeServerPage = () => {
   const dispatch = useDispatch();
   const t = useTranslation();
 
+  const attributes = useSelector((state) => state.session.server?.attributes);
+
   const filter = createFilterOptions();
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const [inputValue, setInputValue] = useState(currentServer);
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [servers, setServers] = useState(hardcodedServers);
+
+  useEffect(() => {
+    const fetchServers = async () => {
+      try {
+        const apiUrl = attributes?.['ui.apiServiceUrl'] ;
+        const apiKey = attributes?.['ui.apiServiceKey'] ;
+        const response = await fetch(apiUrl, {
+          headers: {
+            'api_key': apiKey,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const fetchedServers = data.map((s) => s.address);
+          setServers([...new Set([currentServer, ...fetchedServers])]);
+        }
+      } catch (e) {
+        console.error('Failed to fetch servers:', e);
+      }
+    };
+    if (attributes) {
+      fetchServers();
+    }
+  }, [attributes]);
 
   const validateUrl = (url) => {
     try {
@@ -111,7 +138,7 @@ const ChangeServerPage = () => {
         <Autocomplete
           freeSolo
           className={classes.field}
-          options={officialServers}
+          options={servers}
           renderInput={(params) => (
             <TextField {...params} label={t('settingsServer')} error={invalid} />
           )}

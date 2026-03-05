@@ -119,63 +119,10 @@ import zh_TW from '../../resources/l10n/zh_TW.json';
 import 'dayjs/locale/zh-tw';
 
 const languages = {
-  af: { data: af, country: 'ZA', name: 'Afrikaans' },
   ar: { data: ar, country: 'AE', name: 'العربية' },
-  az: { data: az, country: 'AZ', name: 'Azərbaycanca' },
-  bg: { data: bg, country: 'BG', name: 'Български' },
-  bn: { data: bn, country: 'IN', name: 'বাংলা' },
-  ca: { data: ca, country: 'ES', name: 'Català' },
-  cs: { data: cs, country: 'CZ', name: 'Čeština' },
-  de: { data: de, country: 'DE', name: 'Deutsch' },
-  da: { data: da, country: 'DK', name: 'Dansk' },
-  el: { data: el, country: 'GR', name: 'Ελληνικά' },
   en: { data: en, country: 'US', name: 'English' },
-  es: { data: es, country: 'ES', name: 'Español' },
-  fa: { data: fa, country: 'IR', name: 'فارسی' },
-  fi: { data: fi, country: 'FI', name: 'Suomi' },
   fr: { data: fr, country: 'FR', name: 'Français' },
-  gl: { data: gl, country: 'ES', name: 'Galego' },
-  he: { data: he, country: 'IL', name: 'עברית' },
-  hi: { data: hi, country: 'IN', name: 'हिन्दी' },
-  hr: { data: hr, country: 'HR', name: 'Hrvatski' },
-  hu: { data: hu, country: 'HU', name: 'Magyar' },
-  id: { data: id, country: 'ID', name: 'Bahasa Indonesia' },
-  it: { data: it, country: 'IT', name: 'Italiano' },
-  ja: { data: ja, country: 'JP', name: '日本語' },
-  ka: { data: ka, country: 'GE', name: 'ქართული' },
-  kk: { data: kk, country: 'KZ', name: 'Қазақша' },
-  ko: { data: ko, country: 'KR', name: '한국어' },
-  km: { data: km, country: 'KH', name: 'ភាសាខ្មែរ' },
-  lo: { data: lo, country: 'LA', name: 'ລາວ' },
-  lt: { data: lt, country: 'LT', name: 'Lietuvių' },
-  lv: { data: lv, country: 'LV', name: 'Latviešu' },
-  mk: { data: mk, country: 'MK', name: 'Mакедонски' },
-  ml: { data: ml, country: 'IN', name: 'മലയാളം' },
-  mn: { data: mn, country: 'MN', name: 'Монгол хэл' },
-  ms: { data: ms, country: 'MY', name: 'بهاس ملايو' },
-  nb: { data: nb, country: 'NO', name: 'Norsk bokmål' },
-  ne: { data: ne, country: 'NP', name: 'नेपाली' },
-  nl: { data: nl, country: 'NL', name: 'Nederlands' },
-  nn: { data: nn, country: 'NO', name: 'Norsk nynorsk' },
-  pl: { data: pl, country: 'PL', name: 'Polski' },
-  pt: { data: pt, country: 'PT', name: 'Português' },
-  pt_BR: { data: pt_BR, country: 'BR', name: 'Português (Brasil)' },
-  ro: { data: ro, country: 'RO', name: 'Română' },
-  ru: { data: ru, country: 'RU', name: 'Русский' },
-  si: { data: si, country: 'LK', name: 'සිංහල' },
-  sk: { data: sk, country: 'SK', name: 'Slovenčina' },
-  sl: { data: sl, country: 'SI', name: 'Slovenščina' },
-  sq: { data: sq, country: 'AL', name: 'Shqipëria' },
-  sr: { data: sr, country: 'RS', name: 'Srpski' },
-  sv: { data: sv, country: 'SE', name: 'Svenska' },
-  ta: { data: ta, country: 'IN', name: 'தமிழ்' },
-  th: { data: th, country: 'TH', name: 'ไทย' },
   tr: { data: tr, country: 'TR', name: 'Türkçe' },
-  uk: { data: uk, country: 'UA', name: 'Українська' },
-  uz: { data: uz, country: 'UZ', name: 'Oʻzbekcha' },
-  vi: { data: vi, country: 'VN', name: 'Tiếng Việt' },
-  zh: { data: zh, country: 'CN', name: '中文' },
-  zh_TW: { data: zh_TW, country: 'TW', name: '中文 (Taiwan)' },
 };
 
 const getDefaultLanguage = () => {
@@ -217,7 +164,7 @@ export const LocalizationProvider = ({ children }) => {
 
   const language = remoteLanguage || localLanguage;
 
-  const direction = /^(ar|he|fa)$/.test(language) ? 'rtl' : 'ltr';
+  const direction = language === 'ar' ? 'rtl' : 'ltr';
 
   const value = useMemo(
     () => ({ languages, language, setLocalLanguage, direction }),
