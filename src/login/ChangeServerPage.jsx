@@ -78,22 +78,19 @@ const ChangeServerPage = () => {
         console.log('ChangeServerPage: checking attributes...', attributes);
         
         // Try to get from attributes (which might be filtered for public users)
-        let apiUrl = attributes?.['ui.apiServiceUrl'] || attributes?.['apiServiceUrl'] || attributes?.['web.apiServiceUrl'];
-        let apiKey = attributes?.['ui.apiServiceKey'] || attributes?.['apiServiceKey'] || attributes?.['web.apiServiceKey'];
-        
-        // Fallback to a derived URL if attributes are missing (to help debugging)
+        let apiUrl = attributes?.['ui.apiServiceUrl'];
+        let apiKey = attributes?.['ui.apiServiceKey'];
         if (!apiUrl) {
-          apiUrl = `${window.location.protocol}//${window.location.hostname}:8787/servers`;
-          console.log('ChangeServerPage: attributes missing, using fallback URL:', apiUrl);
+          apiUrl = `${window.location.protocol}//${window.location.hostname}/servers-list`;
+        }
+        
+
+        const headers = {};
+        if (apiKey) {
+          headers['API-Key'] = apiKey;
         }
 
-        console.log('ChangeServerPage: fetching from', apiUrl);
-
-        const response = await fetch(apiUrl, {
-          headers: {
-            'API-Key': apiKey || '',
-          },
-        });
+        const response = await fetch(apiUrl, { headers });
         
         if (response.ok) {
           const data = await response.json();
